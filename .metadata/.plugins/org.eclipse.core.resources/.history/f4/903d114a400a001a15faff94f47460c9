@@ -1,0 +1,17 @@
+package com.gt.shs.repository;
+
+import java.util.List;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
+
+import com.gt.shs.model.HandOver;
+import com.gt.shs.model.HandTaskMap;
+import com.gt.shs.model.User;
+@Repository
+public interface HandTaskMapRepository extends JpaRepository<HandTaskMap, Long>{
+	@Query("select h from handtaskmap h where h.handOver.id = :id")
+    List<HandTaskMap> findByNameEndsWith(@Param("id") Long id);
+}

@@ -1,0 +1,78 @@
+package com.gt.shs.model;
+
+import java.io.Serializable;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EntityListeners;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.validation.constraints.NotBlank;
+
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+@Entity
+@Table(name = "handtaskmap")
+@EntityListeners(AuditingEntityListener.class)
+@JsonIgnoreProperties(value = {}, allowGetters = true)
+public class HandTaskMap implements Serializable{
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
+	
+	@ManyToOne//(fetch = FetchType.EAGER, optional = false)
+    @JoinColumn(name = "handOver_id")
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    private HandOver handOver;
+	
+	
+	@ManyToOne(fetch = FetchType.LAZY , optional = false)
+    @JoinColumn(name = "task_id")
+    @OnDelete(action = OnDeleteAction.CASCADE)
+	//@JsonIgnore
+    private Task task;
+	
+	@Column(nullable = true)
+	private String description;
+	
+	public Long getId() {
+		return this.id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public Task getTask() {
+		return this.task;
+	}
+
+	public void setTask(Task task) {
+		this.task = task;
+	}
+	
+	public String getDescription() {
+		return this.description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+	
+	public HandOver getHandOver() {
+		return this.handOver;
+	}
+
+	public void setDescription(HandOver handOver) {
+		this.handOver = handOver;
+	}
+}

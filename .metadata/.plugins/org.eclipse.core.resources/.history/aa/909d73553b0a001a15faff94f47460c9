@@ -1,0 +1,57 @@
+package com.gt.shs.controller;
+
+import java.util.List;
+
+import javax.validation.Valid;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.gt.shs.ENUM.ResponseType;
+import com.gt.shs.model.HandOver;
+import com.gt.shs.model.HandTaskMap;
+import com.gt.shs.model.Response;
+import com.gt.shs.repository.HandTaskMapRepository;
+
+@RestController
+@RequestMapping("/api/handovermap")
+@CrossOrigin(origins = "*", allowedHeaders = "*")
+public class HandTaskMapController extends BaseController{
+	@Autowired
+	HandTaskMapRepository handTaskMapRepository;
+
+	// Get All Notes
+	@GetMapping(path = "/maps", produces = "application/json")
+	public ResponseEntity<Response> getAllUsers() {
+		List<HandTaskMap> map=handTaskMapRepository.findAll();
+        if (map.isEmpty()) {
+            return new ResponseEntity<Response>(getResponse(map, ResponseType.NoData), HttpStatus.OK);
+        } else {
+            return new ResponseEntity<Response>(getResponse(map, ResponseType.Success), HttpStatus.OK);
+        }
+	}
+	
+	@PostMapping("/maps/{userId}")
+	public ResponseEntity<Response> getHandTaskMap(@PathVariable(value = "userId") Long id) {
+		List<HandTaskMap> map=handTaskMapRepository.findByHandOver(id);
+        if (map.isEmpty()) {
+            return new ResponseEntity<Response>(getResponse(map, ResponseType.NoData), HttpStatus.OK);
+        } else {
+            return new ResponseEntity<Response>(getResponse(map, ResponseType.Success), HttpStatus.OK);
+        }
+	}
+	
+//	@PostMapping("/maps")
+//	public ResponseEntity<Response> createHandOver(@Valid @RequestBody List<HandTaskMap> handTaskMaps) {
+//		 return new ResponseEntity<Response>(getResponse(handTaskMapRepository.saveAll(handTaskMaps), ResponseType.Success), HttpStatus.OK);
+//	}
+
+}

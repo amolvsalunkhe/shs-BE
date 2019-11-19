@@ -1,0 +1,5 @@
+package com.gt.shs.repository;
+
+public interface CategoryRepository {
+
+}
